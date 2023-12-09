@@ -1,10 +1,11 @@
-const { embedNoLLNode, embedNoTrackPlaying } = require("./embeds");
+const { embedNoLLNode, embedNoTrackPlaying, embedNotEnoughSong } = require("./embeds");
 
 /**
  * @param {import("../lib/Bot")} client
  * @param {import("discord.js").Interaction} interaction
+ * @param {{minimumQueueLength?: number}}
  */
-const ccInteractionHook = async (client, interaction) => {
+const ccInteractionHook = async (client, interaction, { minimumQueueLength } = {}) => {
 	if (!interaction.isButton()) {
 		throw new Error("Invalid interaction type for this command");
 	}
@@ -46,6 +47,13 @@ const ccInteractionHook = async (client, interaction) => {
 
 	if (!player) {
 		return returnError(sendError(embedNoTrackPlaying()));
+	}
+
+	if (
+		typeof minimumQueueLength === "number" &&
+		(player.queue?.length ?? 0) < minimumQueueLength
+	) {
+		return returnError(sendError(embedNotEnoughSong()));
 	}
 
 	return { error: false, data: { channel, sendError, player } };

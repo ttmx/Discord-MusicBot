@@ -120,7 +120,14 @@ const handleMessageDelete = async (message) => {
 const updateControlMessage = async (guildId, track) => {
 	const message = await getControlChannelMessage(guildId);
 
-	if (!message) throw new Error("Guild doesn't have control channel");
+	if (!message) {
+		// throw in debug mode
+		if (getClient().config.OPLevel > 1)
+			throw new Error("Guild doesn't have control channel");
+
+		// else silently ignore
+		return;
+	}
 
 	return message.edit(controlChannelMessage({ guildId, track }));
 };
