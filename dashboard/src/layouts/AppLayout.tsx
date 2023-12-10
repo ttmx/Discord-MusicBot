@@ -120,7 +120,10 @@ const AppLayout: PageLayout = ({
             })}
         >
             <div style={contentContainerStyle}>{children}</div>
-            <ModalShortcut open={modalShortcutOpen} />
+            <ModalShortcut
+                open={modalShortcutOpen}
+                onClose={() => modalShortcutOpen && setModalShortcutOpen(false)}
+            />
         </NextUIProvider>
     );
 };
