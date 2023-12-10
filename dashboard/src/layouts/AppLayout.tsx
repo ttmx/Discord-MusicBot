@@ -1,5 +1,12 @@
+import ModalShortcut from '@/components/ModalShortcut';
 import { PageLayout } from '@/interfaces/layouts';
+import {
+    execKbdsrct,
+    registerKbdsrct,
+    unregisterKbdsrct,
+} from '@/libs/kbdsrct';
 import { createTheme, NextUIProvider } from '@nextui-org/react';
+import { useEffect, useRef, useState } from 'react';
 
 const AppLayout: PageLayout = ({
     children,
@@ -13,6 +20,93 @@ const AppLayout: PageLayout = ({
         overflow: 'hidden',
     },
 }) => {
+    const [modalShortcutOpen, setModalShortcutOpen] = useState(false);
+
+    const pressesRef = useRef<string[]>([]);
+
+    const removePresses = (key: string) => {
+        const rmIdx = pressesRef.current.findIndex((v) => key === v);
+        if (rmIdx < 0) return false;
+
+        pressesRef.current.splice(rmIdx, 1);
+        return true;
+    };
+
+    /**
+     * Modifier detection may not work depends on user's keyboard configuration, there's at least
+     * OS level and app level capture, each that can block browser javascript from getting any key press event
+     * or preventing some modifier to give its current actual state (mostly Alt key for me)
+     *
+     * The browser might not even fire keyboard event cuz it's already captured by the OS or other app
+     */
+    const kbdsrctInHandler = (e: KeyboardEvent) => {
+        let hasMod = false;
+
+        if (e.shiftKey) {
+            pressesRef.current.push('Shift');
+            hasMod = true;
+        }
+
+        if (e.metaKey) {
+            hasMod = true;
+        }
+
+        if (e.ctrlKey) {
+            pressesRef.current.push('Control');
+            hasMod = true;
+        }
+
+        if (e.altKey) {
+            pressesRef.current.push('Alt');
+            hasMod = true;
+        }
+
+        // no sane keyboard shortcut without modifier
+        if (!hasMod) return;
+
+        pressesRef.current.push(e.key);
+
+        if (execKbdsrct(pressesRef.current)) e.preventDefault();
+    };
+
+    const kbdsrctOutHandler = (e: KeyboardEvent) => {
+        if (removePresses(e.key)) {
+            e.preventDefault();
+        }
+
+        // remove modifier keys too
+        if (e.shiftKey) {
+            removePresses('Shift');
+        }
+
+        if (e.ctrlKey) {
+            removePresses('Control');
+        }
+
+        if (e.altKey) {
+            removePresses('Alt');
+        }
+    };
+
+    const modalShortcutKbdsrct = {
+        comb: ['Control', '/'],
+        cb: () => setModalShortcutOpen((v) => !v),
+    };
+
+    useEffect(() => {
+        document.body.addEventListener('keydown', kbdsrctInHandler);
+        document.body.addEventListener('keyup', kbdsrctOutHandler);
+
+        registerKbdsrct(modalShortcutKbdsrct);
+
+        return () => {
+            document.body.removeEventListener('keydown', kbdsrctInHandler);
+            document.body.removeEventListener('keyup', kbdsrctOutHandler);
+
+            unregisterKbdsrct(modalShortcutKbdsrct);
+        };
+    }, []);
+
     return (
         <NextUIProvider
             theme={createTheme({
@@ -26,6 +120,7 @@ const AppLayout: PageLayout = ({
             })}
         >
             <div style={contentContainerStyle}>{children}</div>
+            <ModalShortcut open={modalShortcutOpen} />
         </NextUIProvider>
     );
 };
