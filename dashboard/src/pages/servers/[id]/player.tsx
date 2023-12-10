@@ -333,6 +333,24 @@ const Player: NextPageWithLayout = () => {
         });
     };
 
+    useEffect(() => {
+        sharedStateMount(sharedState);
+        seekerMount();
+
+        playerSocket.mount(serverId as string, {
+            mountHandler: {
+                close: handleSocketClose,
+            },
+            eventHandler: socketEventHandlers,
+        });
+
+        return () => {
+            sharedStateUnmount(sharedState);
+            seekerUnmount();
+            playerSocket.unmount(serverId as string);
+        };
+    }, []);
+
     const handleNavbarToggle = () => {
         if (!sharedState.setNavbarShow) return;
         if (!sharedState.navbarAbsolute) {
@@ -452,26 +470,12 @@ const Player: NextPageWithLayout = () => {
     };
 
     useEffect(() => {
-        sharedStateMount(sharedState);
-        seekerMount();
-
-        playerSocket.mount(serverId as string, {
-            mountHandler: {
-                close: handleSocketClose,
-            },
-            eventHandler: socketEventHandlers,
-        });
-
         registerAllSrct();
 
         return () => {
-            sharedStateUnmount(sharedState);
-            seekerUnmount();
-            playerSocket.unmount(serverId as string);
-
             unregisterAllSrct();
         };
-    }, []);
+    }, [registerAllSrct, unregisterAllSrct]);
 
     const mainImg = !playing?.thumbnail?.length
         ? SampleThumb.src
