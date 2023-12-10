@@ -424,7 +424,8 @@ const Player: NextPageWithLayout = () => {
     };
 
     const spacePP = {
-        comb: ['Space'],
+        // literally a space
+        comb: [' '],
         cb: togglePlayPause,
     };
 
