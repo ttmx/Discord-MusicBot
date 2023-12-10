@@ -34,6 +34,7 @@ import {
 import Image from 'next/image';
 import { getImageOnErrorHandler } from '@/utils/image';
 import useAbortDelay from '@/hooks/useAbortDelay';
+import { registerKbdsrct, unregisterKbdsrct } from '@/libs/kbdsrct';
 
 const FALLBACK_MAX_PROGRESS_VALUE = 1;
 const SOCKET_WAIT_RES_TIMEOUT = 3000;
@@ -332,24 +333,6 @@ const Player: NextPageWithLayout = () => {
         });
     };
 
-    useEffect(() => {
-        sharedStateMount(sharedState);
-        seekerMount();
-
-        playerSocket.mount(serverId as string, {
-            mountHandler: {
-                close: handleSocketClose,
-            },
-            eventHandler: socketEventHandlers,
-        });
-
-        return () => {
-            sharedStateUnmount(sharedState);
-            seekerUnmount();
-            playerSocket.unmount(serverId as string);
-        };
-    }, []);
-
     const handleNavbarToggle = () => {
         if (!sharedState.setNavbarShow) return;
         if (!sharedState.navbarAbsolute) {
@@ -439,6 +422,55 @@ const Player: NextPageWithLayout = () => {
         emitNext();
         runNextBack(() => {}, SOCKET_WAIT_RES_TIMEOUT);
     };
+
+    const spacePP = {
+        comb: ['Space'],
+        cb: togglePlayPause,
+    };
+
+    const arrowLeftPrev = {
+        comb: ['Alt', 'ArrowLeft'],
+        cb: handlePrevious,
+    };
+
+    const arrowRightNext = {
+        comb: ['Alt', 'ArrowRight'],
+        cb: handleNext,
+    };
+
+    const registerAllSrct = () => {
+        registerKbdsrct(spacePP);
+        registerKbdsrct(arrowLeftPrev);
+        registerKbdsrct(arrowRightNext);
+    };
+
+    const unregisterAllSrct = () => {
+        unregisterKbdsrct(spacePP);
+        unregisterKbdsrct(arrowLeftPrev);
+        unregisterKbdsrct(arrowRightNext);
+    };
+
+    useEffect(() => {
+        sharedStateMount(sharedState);
+        seekerMount();
+
+        playerSocket.mount(serverId as string, {
+            mountHandler: {
+                close: handleSocketClose,
+            },
+            eventHandler: socketEventHandlers,
+        });
+
+        registerAllSrct();
+
+        return () => {
+            sharedStateUnmount(sharedState);
+            seekerUnmount();
+            playerSocket.unmount(serverId as string);
+
+            unregisterAllSrct();
+        };
+    }, []);
 
     const mainImg = !playing?.thumbnail?.length
         ? SampleThumb.src

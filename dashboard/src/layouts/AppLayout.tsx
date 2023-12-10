@@ -40,29 +40,17 @@ const AppLayout: PageLayout = ({
      * The browser might not even fire keyboard event cuz it's already captured by the OS or other app
      */
     const kbdsrctInHandler = (e: KeyboardEvent) => {
-        let hasMod = false;
-
         if (e.shiftKey) {
             pressesRef.current.push('Shift');
-            hasMod = true;
-        }
-
-        if (e.metaKey) {
-            hasMod = true;
         }
 
         if (e.ctrlKey) {
             pressesRef.current.push('Control');
-            hasMod = true;
         }
 
         if (e.altKey) {
             pressesRef.current.push('Alt');
-            hasMod = true;
         }
-
-        // no sane keyboard shortcut without modifier
-        if (!hasMod) return;
 
         pressesRef.current.push(e.key);
 
