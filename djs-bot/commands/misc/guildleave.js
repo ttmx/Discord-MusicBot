@@ -1,54 +1,43 @@
 const { EmbedBuilder } = require("discord.js");
-const SlashCommand = require("../../lib/SlashCommand");
 
-const command = new SlashCommand()
-	.setName("guildleave")
-	.setDescription("leaves a guild")
-    .addStringOption((option) =>
-    option
-      .setName("id")
-      .setDescription("Enter the guild id to leave (type `list` for guild ids)")
-      .setRequired(true)
-  )
-  .setOwnerOnly()
-  .setRun(async (client, interaction, options) => {
-		if (interaction.user.id === client.config.adminId) {
-		    try{
-			const id = interaction.options.getString('id');
+module.exports = {
+    name: "guildleave",
+    category: "misc",
+    usage: "/guildleave <id>",
+    description: "Leaves a guild specified by the ID.",
+    options: [
+        {
+            name: "id",
+            type: 3, // "STRING"
+            description: "Enter the guild ID to leave (type `list` for guild IDs)",
+            required: true,
+        },
+    ],
+    ownerOnly: true,
+    run: async (client, interaction, options) => {
+        try {
+            const id = interaction.options.getString('id');
 
-			if (id.toLowerCase() === 'list'){
-			    client.guilds.cache.forEach((guild) => {
-				console.log(`${guild.name} | ${guild.id}`);
-			    });
-			    const guild = client.guilds.cache.map(guild => ` ${guild.name} | ${guild.id}`);
-			    try{
-				return interaction.reply({content:`Guilds:\n\`${guild}\``, ephemeral: true});
-			    }catch{
-				return interaction.reply({content:`check console for list of guilds`, ephemeral: true});
-			    }
-			}
+            if (id.toLowerCase() === 'list') {
+                try {
+                    const guildList = client.guilds.cache.map(guild => `${guild.name} | ${guild.id}`).join('\n');
+                    return interaction.reply({ content: `Guilds:\n\`${guildList}\``, ephemeral: true });
+                } catch (error) {
+                    console.error('Error listing guilds:', error);
+                    return interaction.reply({ content: `Check console for list of guilds`, ephemeral: true });
+                }
+            }
 
-			const guild = client.guilds.cache.get(id);
+            const guild = client.guilds.cache.get(id);
+            if (!guild) {
+                return interaction.reply({ content: `\`${id}\` is not a valid guild ID`, ephemeral: true });
+            }
 
-			if(!guild){
-			    return interaction.reply({content: `\`${id}\` is not a valid guild id`, ephemeral:true});
-			}
-
-			await guild.leave().then(c => console.log(`left guild ${id}`)).catch((err) => {console.log(err)});
-			return interaction.reply({content:`left guild \`${id}\``, ephemeral: true});
-		    }catch (error){
-			console.log(`there was an error trying to leave guild ${id}`, error);
-		    }
-		}else {
-			return interaction.reply({
-				embeds: [
-					new EmbedBuilder()
-						.setColor(client.config.embedColor)
-						.setDescription("You are not authorized to use this command!"),
-				],
-				ephemeral: true,
-			});
-		}
-	});
-
-module.exports = command;
+            await guild.leave();
+            return interaction.reply({ content: `Left guild \`${id}\``, ephemeral: true });
+        } catch (error) {
+            console.error(`There was an error trying to leave guild ${id}:`, error);
+            return interaction.reply({ content: `Error leaving guild.`, ephemeral: true });
+        }
+    },
+};
