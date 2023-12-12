@@ -17,6 +17,7 @@ const Home: NextPageWithLayout = () => {
             css={{
                 overflow: 'auto',
             }}
+            responsive={false}
         >
             <Head>
                 <title>Discord Music Bot</title>

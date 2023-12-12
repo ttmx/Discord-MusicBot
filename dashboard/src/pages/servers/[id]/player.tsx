@@ -34,6 +34,7 @@ import {
 import Image from 'next/image';
 import { getImageOnErrorHandler } from '@/utils/image';
 import useAbortDelay from '@/hooks/useAbortDelay';
+import { registerKbdsrct, unregisterKbdsrct } from '@/libs/kbdsrct';
 
 const FALLBACK_MAX_PROGRESS_VALUE = 1;
 const SOCKET_WAIT_RES_TIMEOUT = 3000;
@@ -439,6 +440,42 @@ const Player: NextPageWithLayout = () => {
         emitNext();
         runNextBack(() => {}, SOCKET_WAIT_RES_TIMEOUT);
     };
+
+    const spacePP = {
+        // literally a space
+        comb: [' '],
+        cb: togglePlayPause,
+    };
+
+    const arrowLeftPrev = {
+        comb: ['Alt', 'ArrowLeft'],
+        cb: handlePrevious,
+    };
+
+    const arrowRightNext = {
+        comb: ['Alt', 'ArrowRight'],
+        cb: handleNext,
+    };
+
+    const registerAllSrct = () => {
+        registerKbdsrct(spacePP);
+        registerKbdsrct(arrowLeftPrev);
+        registerKbdsrct(arrowRightNext);
+    };
+
+    const unregisterAllSrct = () => {
+        unregisterKbdsrct(spacePP);
+        unregisterKbdsrct(arrowLeftPrev);
+        unregisterKbdsrct(arrowRightNext);
+    };
+
+    useEffect(() => {
+        registerAllSrct();
+
+        return () => {
+            unregisterAllSrct();
+        };
+    }, [registerAllSrct, unregisterAllSrct]);
 
     const mainImg = !playing?.thumbnail?.length
         ? SampleThumb.src
