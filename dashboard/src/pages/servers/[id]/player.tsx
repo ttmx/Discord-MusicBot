@@ -445,28 +445,37 @@ const Player: NextPageWithLayout = () => {
         // literally a space
         comb: [' '],
         cb: togglePlayPause,
+        category: 'Playback',
+        description: 'Play / Pause',
+        combDisplay: ['Space'],
     };
 
     const arrowLeftPrev = {
         comb: ['Alt', 'ArrowLeft'],
         cb: handlePrevious,
+        category: 'Playback',
+        description: 'Previous Track',
+        combDisplay: ['Alt', '←'],
     };
 
     const arrowRightNext = {
         comb: ['Alt', 'ArrowRight'],
         cb: handleNext,
+        category: 'Playback',
+        description: 'Next Track',
+        combDisplay: ['Alt', '→'],
     };
 
     const registerAllSrct = () => {
         registerKbdsrct(spacePP);
-        registerKbdsrct(arrowLeftPrev);
         registerKbdsrct(arrowRightNext);
+        registerKbdsrct(arrowLeftPrev);
     };
 
     const unregisterAllSrct = () => {
         unregisterKbdsrct(spacePP);
-        unregisterKbdsrct(arrowLeftPrev);
         unregisterKbdsrct(arrowRightNext);
+        unregisterKbdsrct(arrowLeftPrev);
     };
 
     useEffect(() => {

@@ -2,7 +2,7 @@ import { IShortcutEntryProps } from '@/interfaces/components/Shortcuts';
 import Key from '@/components/shortcuts/Key';
 
 export default function ShortcutEntry({
-    name,
+    description,
     comb = [],
 }: IShortcutEntryProps) {
     return (
@@ -13,15 +13,13 @@ export default function ShortcutEntry({
                 alignItems: 'center',
             }}
         >
-            <div>{name}</div>
+            <div>{description}</div>
             <div
                 style={{
                     display: 'flex',
                 }}
             >
-                {comb.map((v, i) => (
-                    <Key key={i}>{v}</Key>
-                ))}
+                {comb?.map((v, i) => <Key key={i}>{v}</Key>)}
             </div>
         </div>
     );

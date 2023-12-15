@@ -3,6 +3,6 @@ export interface IKeyProps {
 }
 
 export interface IShortcutEntryProps {
-    name?: React.ReactNode;
+    description?: React.ReactNode;
     comb?: IKeyProps['children'][];
 }

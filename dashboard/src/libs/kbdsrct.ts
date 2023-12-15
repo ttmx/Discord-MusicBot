@@ -1,4 +1,4 @@
-import { IKbdsrct } from '@/interfaces/kbdsrct';
+import { IKbdsrct, IShorcutGroup } from '@/interfaces/kbdsrct';
 
 const kbdsrcts: IKbdsrct[] = [];
 
@@ -86,4 +86,27 @@ export function execKbdsrct(keypresses: string[]) {
     }
 
     return hasSrct;
+}
+
+export function getAllShortcuts() {
+    const allShortcuts: IShorcutGroup[] = [];
+
+    for (const k of kbdsrcts) {
+        if (k.hide) continue;
+
+        const ref = allShortcuts.find((v) => v.category === k.category);
+
+        if (!ref) {
+            allShortcuts.push({
+                category: k.category,
+                shorcuts: [k],
+            });
+
+            continue;
+        }
+
+        ref.shorcuts.push(k);
+    }
+
+    return allShortcuts;
 }

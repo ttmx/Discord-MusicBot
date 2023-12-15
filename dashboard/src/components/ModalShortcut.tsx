@@ -4,12 +4,15 @@ import { Container } from '@nextui-org/react';
 import ModalCloseIcon from '@/assets/icons/modal-close.svg';
 import Key from '@/components/shortcuts/Key';
 import ShortcutEntry from './shortcuts/ShortcutEntry';
+import { getAllShortcuts } from '@/libs/kbdsrct';
 
 export default function ModalShortcut({
     open,
     onClose,
     modalContainerProps = {},
 }: IModalShortcutProps) {
+    const allShortcuts = getAllShortcuts();
+
     return (
         <Modal open={open} {...modalContainerProps}>
             <Container
@@ -69,13 +72,18 @@ export default function ModalShortcut({
                     }}
                 >
                     <div>
-                        <h2>Playback</h2>
-                        <ShortcutEntry name="Play / Pause" comb={['Space']} />
-                        <ShortcutEntry name="Next Track" comb={['Alt', '→']} />
-                        <ShortcutEntry
-                            name="Previous Track"
-                            comb={['Alt', '←']}
-                        />
+                        {allShortcuts.map((s) => (
+                            <>
+                                <h2>{s.category}</h2>
+                                {s.shorcuts.map((h) => (
+                                    <ShortcutEntry
+                                        key={`${h.category}-${h.description}`}
+                                        description={h.description}
+                                        comb={h.combDisplay}
+                                    />
+                                ))}
+                            </>
+                        ))}
                     </div>
                 </div>
             </Container>
