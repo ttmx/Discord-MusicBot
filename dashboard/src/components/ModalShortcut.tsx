@@ -79,7 +79,7 @@ export default function ModalShortcut({
                                     <ShortcutEntry
                                         key={`${h.category}-${h.description}`}
                                         description={h.description}
-                                        comb={h.combDisplay}
+                                        comb={h.combDisplay ?? h.comb}
                                     />
                                 ))}
                             </>
