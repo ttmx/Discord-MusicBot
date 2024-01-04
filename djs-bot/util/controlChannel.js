@@ -23,7 +23,8 @@ const getControlChannelMessage = async (guildId) => {
 
 	const client = getClient();
 
-	if (!client.db) throw new Error("No database configured");
+	// no db? simply ignore
+	if (!client.db) return;
 
 	const { controlChannelId, controlChannelMessageId } =
 		(await client.db.guild.findFirst({
@@ -66,7 +67,8 @@ const setDbControlChannel = async ({ guildId, channelId, messageId } = {}) => {
 		);
 	else deleteControlChannelMessage(guildId);
 
-	if (!client.db) throw new Error("No db configured");
+	// no db? simply ignore
+	if (!client.db) return;
 
 	await client.db.guild.upsert({
 		where: {
@@ -103,7 +105,8 @@ const handleMessageDelete = async (message) => {
 
 	const client = getClient();
 
-	if (!client.db) throw new Error("No database configured");
+	// no db? simply ignore
+	if (!client.db) return;
 
 	await client.db.guild.update({
 		where: {

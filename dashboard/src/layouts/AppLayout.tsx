@@ -79,6 +79,7 @@ const AppLayout: PageLayout = ({
     const modalShortcutKbdsrct = {
         comb: ['Control', '/'],
         cb: () => setModalShortcutOpen((v) => !v),
+        hide: true,
     };
 
     useEffect(() => {

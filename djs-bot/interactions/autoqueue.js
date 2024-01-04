@@ -1,6 +1,5 @@
 const SlashCommand = require("../lib/SlashCommand");
 const { ccInteractionHook } = require("../util/interactions");
-const { autoQueueEmbed } = require("../util/embeds");
 const { updateControlMessage } = require("../util/controlChannel");
 
 const command = new SlashCommand()
