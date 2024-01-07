@@ -1,11 +1,21 @@
-export interface IKbdsrct {
+interface IBaseKbdsrct {
     comb: string[];
     cb: () => void;
-    category?: string;
     description?: string;
-    hide?: boolean;
     combDisplay?: string[];
 }
+
+export interface IDefaultKbdsrct extends IBaseKbdsrct {
+    category: string;
+    hide?: false;
+}
+
+export interface IHiddenKbdsrct extends IBaseKbdsrct {
+    category?: string;
+    hide: true;
+}
+
+export type IKbdsrct = IDefaultKbdsrct | IHiddenKbdsrct;
 
 export interface IShorcutGroup {
     category: string;
