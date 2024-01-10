@@ -441,6 +441,30 @@ const Player: NextPageWithLayout = () => {
         runNextBack(() => {}, SOCKET_WAIT_RES_TIMEOUT);
     };
 
+    useEffect(() => {
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.setActionHandler('play', togglePlayPause);
+            navigator.mediaSession.setActionHandler('pause', togglePlayPause);
+            navigator.mediaSession.setActionHandler('previoustrack', handlePrevious);
+            navigator.mediaSession.setActionHandler('nexttrack', handleNext);
+        }
+    }, [togglePlayPause, handlePrevious, handleNext]);
+
+    useEffect(() => {
+        const audioElement = document.getElementById('audio') as HTMLAudioElement;
+    
+        const playAudio = () => {
+          audioElement.loop = true;
+          audioElement.play();
+        };
+    
+        document.body.addEventListener('click', playAudio);
+    
+        return () => {
+          document.body.removeEventListener('click', playAudio);
+        };
+    }, []);
+    
     const spacePP = {
         // literally a space
         comb: [' '],
@@ -507,6 +531,7 @@ const Player: NextPageWithLayout = () => {
 
     return (
         <div className="player-page-container">
+            <audio id="audio" src="https://github.com/anars/blank-audio/raw/master/10-minutes-of-silence.mp3" style={{ display: 'none' }}></audio>
             <div
                 className={classNames(
                     'btn-navbar-toggle-container btn-toggle-container',
