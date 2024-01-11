@@ -97,6 +97,10 @@ const sharedStateUnmount = (sharedState: IGlobalState) => {
     }
 };
 
+function hasMediaSession() {
+    return 'mediaSession' in navigator;
+}
+
 export const getServerSideProps = () => {
     return {
         props: {},
@@ -125,6 +129,7 @@ const Player: NextPageWithLayout = () => {
     const progressbarRef = useRef<HTMLDivElement>(null);
     const progressValueRef = useRef<number>(0);
     const toSeekProgressValue = useRef<number | undefined>();
+    const silenceAudioRef = useRef<HTMLAudioElement | null>(null);
 
     const {
         reset: resetResetProgress,
@@ -164,6 +169,16 @@ const Player: NextPageWithLayout = () => {
                 progressValue,
                 maxProgressValue.current,
             );
+
+            if (
+                hasMediaSession() &&
+                navigator.mediaSession.metadata &&
+                navigator.mediaSession.metadata.album !==
+                    durationDisplayRef.current.textContent
+            ) {
+                navigator.mediaSession.metadata.album =
+                    durationDisplayRef.current.textContent;
+            }
         }
 
         progressValueRef.current = progressValue;
@@ -333,6 +348,28 @@ const Player: NextPageWithLayout = () => {
         });
     };
 
+    const checkSilenceAudioPlayback = () => {
+        if (silenceAudioRef.current) return;
+
+        const audioElement = document.getElementById(
+            'silence-audio',
+        ) as HTMLAudioElement;
+
+        if (!audioElement) return;
+
+        silenceAudioRef.current = audioElement;
+
+        audioElement.loop = true;
+        audioElement.play();
+    };
+
+    const silenceAudioPlaybackMount = () => {
+        document.addEventListener('click', checkSilenceAudioPlayback);
+        return () => {
+            document.removeEventListener('click', checkSilenceAudioPlayback);
+        };
+    };
+
     useEffect(() => {
         sharedStateMount(sharedState);
         seekerMount();
@@ -344,10 +381,13 @@ const Player: NextPageWithLayout = () => {
             eventHandler: socketEventHandlers,
         });
 
+        const silenceAudioPlaybackUnmount = silenceAudioPlaybackMount();
+
         return () => {
             sharedStateUnmount(sharedState);
             seekerUnmount();
             playerSocket.unmount(serverId as string);
+            silenceAudioPlaybackUnmount();
         };
     }, []);
 
@@ -425,6 +465,15 @@ const Player: NextPageWithLayout = () => {
         }, SOCKET_WAIT_RES_TIMEOUT);
 
         setPaused(newPaused);
+
+        if (!silenceAudioRef.current) return;
+
+        if (newPaused) {
+            silenceAudioRef.current.pause();
+            return;
+        }
+
+        silenceAudioRef.current.play();
     };
 
     const handlePrevious = () => {
@@ -442,29 +491,33 @@ const Player: NextPageWithLayout = () => {
     };
 
     useEffect(() => {
-        if ('mediaSession' in navigator) {
-            navigator.mediaSession.setActionHandler('play', togglePlayPause);
-            navigator.mediaSession.setActionHandler('pause', togglePlayPause);
-            navigator.mediaSession.setActionHandler('previoustrack', handlePrevious);
-            navigator.mediaSession.setActionHandler('nexttrack', handleNext);
-        }
+        if (!hasMediaSession()) return;
+
+        navigator.mediaSession.setActionHandler('play', togglePlayPause);
+        navigator.mediaSession.setActionHandler('pause', togglePlayPause);
+        navigator.mediaSession.setActionHandler(
+            'previoustrack',
+            handlePrevious,
+        );
+
+        navigator.mediaSession.setActionHandler('nexttrack', handleNext);
     }, [togglePlayPause, handlePrevious, handleNext]);
 
     useEffect(() => {
-        const audioElement = document.getElementById('audio') as HTMLAudioElement;
-    
-        const playAudio = () => {
-          audioElement.loop = true;
-          audioElement.play();
-        };
-    
-        document.body.addEventListener('click', playAudio);
-    
-        return () => {
-          document.body.removeEventListener('click', playAudio);
-        };
-    }, []);
-    
+        if (!hasMediaSession()) return;
+
+        if (!playing) {
+            navigator.mediaSession.metadata = null;
+            return;
+        }
+
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: playing.title,
+            artist: playing.author,
+            artwork: [{ src: mainImg }],
+        });
+    }, [playing]);
+
     const spacePP = {
         // literally a space
         comb: [' '],
@@ -531,7 +584,12 @@ const Player: NextPageWithLayout = () => {
 
     return (
         <div className="player-page-container">
-            <audio id="audio" src="https://github.com/anars/blank-audio/raw/master/10-minutes-of-silence.mp3" style={{ display: 'none' }}></audio>
+            <audio
+                id="silence-audio"
+                src="https://github.com/anars/blank-audio/raw/master/10-seconds-of-silence.mp3"
+                style={{ display: 'none' }}
+            />
+
             <div
                 className={classNames(
                     'btn-navbar-toggle-container btn-toggle-container',
