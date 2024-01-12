@@ -8,6 +8,7 @@ const { Cosmicord, CosmiPlayer, CosmiNode } = require("cosmicord.js");
 const { updateControlMessage } = require("../../util/controlChannel");
 const { handleTrackStart } = require("../MusicEvents");
 const { pause } = require("../../util/player");
+const { setDefaultPlayerConfig } = require("../../util/musicManager");
 
 class CosmicordPlayerExtended extends CosmiPlayer {
 	/**
@@ -20,8 +21,8 @@ class CosmicordPlayerExtended extends CosmiPlayer {
 
 		/** @type {CosmicordExtended} */
 		this.cosmicord = cosmicordExtended;
-		/** @type {boolean} */
-		this.twentyFourSeven = false;
+		
+		setDefaultPlayerConfig(this);
 	}
 
 	/** The guild id of the player */

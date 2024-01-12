@@ -125,6 +125,7 @@ const command = new SlashCommand()
 		}
 
 		if (res.loadType === "TRACK_LOADED" || res.loadType === "SEARCH_RESULT") {
+			player.set("requester", interaction.guild.members.me);
 			addTrack(player, res.tracks[0]);
 
 			if (!player.playing && !player.paused && !player.queue.size) {
@@ -144,6 +145,7 @@ const command = new SlashCommand()
 		}
 
 		if (res.loadType === "PLAYLIST_LOADED") {
+			player.set("requester", interaction.guild.members.me);
 			addTrack(player, res.tracks);
 
 			if (

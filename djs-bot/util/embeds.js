@@ -63,21 +63,23 @@ const embedClearedQueue = () =>
 /**
  * @typedef {object} TrackStartedEmbedParams
  * @property {import("cosmicord.js").CosmiTrack=} track
+ * @property {import("../lib/clients/MusicClient").CosmicordPlayerExtended} player
+ * @property {string=} title
  *
  * @param {TrackStartedEmbedParams}
  */
-const trackStartedEmbed = ({ track, player } = {}) => {
+const trackStartedEmbed = ({ track, player, title = 'Now playing' } = {}) => {
 	const client = getClient();
 
 	const embed = new EmbedBuilder().setColor(client.config.embedColor);
 
 	if (track) {
-		embed.setAuthor({ name: "Now playing", iconURL: client.config.iconURL })
+		embed.setAuthor({ name: title, iconURL: client.config.iconURL })
 			.setDescription(`[${track.title}](${track.uri})`)
 			.addFields([
 				{
 					name: "Requested by",
-					value: `${track.requester}`,
+					value: `${track.requester ?? 'ʕ•ᴥ•ʔ'}`,
 					inline: true,
 				},
 				{
@@ -281,6 +283,18 @@ const autoQueueEmbed = ({ autoQueue }) => {
 		});
 };
 
+const historyEmbed = ({ history }) => {
+	const client = getClient();
+	return new EmbedBuilder()
+		.setColor(client.config.embedColor)
+		.setDescription(`**History is** \`${!history ? "ON" : "OFF"}\``)
+		.setFooter({
+			text: `Music history will ${
+				!history ? "no longer be" : "now be automatically"
+			} removed.`,
+		});
+};
+
 /**
  * @param {import("../lib/clients/MusicClient").CosmicordPlayerExtended} player
  * @param {EmbedBuilder} embed
@@ -328,6 +342,7 @@ module.exports = {
 	addQueueEmbed,
 	loadedPlaylistEmbed,
 	autoQueueEmbed,
+	historyEmbed,
 	addPlayerStateFooter,
 	getButtons,
 	embedNotEnoughSong,
