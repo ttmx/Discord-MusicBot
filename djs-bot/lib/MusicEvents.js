@@ -65,10 +65,10 @@ function handleQueueUpdate({ guildId, player }) {
 }
 
 function sendTrackHistory({ player, track }) {
-	runIfNotControlChannel(player, () => {
-		const history = player.get("history");
-		if (!history) return;
+	const history = player.get("history");
+	if (!history) return;
 
+	runIfNotControlChannel(player, () => {
 		const client = getClient();
 
 		client.channels.cache
