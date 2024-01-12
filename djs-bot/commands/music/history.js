@@ -2,6 +2,7 @@ const colors = require("colors");
 const { EmbedBuilder } = require("discord.js");
 const SlashCommand = require("../../lib/SlashCommand");
 const { historyEmbed } = require("../../util/embeds");
+const { deleteMessageDelay } = require("../../util/message");
 
 const command = new SlashCommand()
 	.setName("history")
@@ -56,7 +57,7 @@ const command = new SlashCommand()
 		);
 
 		const ret = await interaction.reply({ embeds: [historyEmbed({history})], fetchReply: true });
-		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
+		deleteMessageDelay(ret);
 		return ret;
 	});
 
