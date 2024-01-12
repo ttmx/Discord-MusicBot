@@ -66,6 +66,7 @@ module.exports = {
 	 * Music engine to use
 	 * @type {keyof typeof import("./lib/clients/MusicClient").Engine} */
 	musicEngine: "Erela",
+
 	/** 
 	 * Nodes to connect to
 	 * @type {import("erela.js").Node[]} */
@@ -121,6 +122,7 @@ module.exports = {
 	 * 0 = No debug logging (production), 1 = Standard Logging (debug info), 2 = Development (everything)
 	 * @type {number} */
 	OPLevel: 1,
+
 	/**
 	 * Color of the embeds (can also be hex)
 	 * @type {import('discord.js').ColorResolvable} */
@@ -158,8 +160,17 @@ module.exports = {
 			}
 		],
 	},
+
 	/** 
 	 * This icon will be in every embed's author field, if you don't want it, just leave it blank or "undefined"
 	 * @type {string} */
 	iconURL: undefined,
+
+	defaultPlayerValues: {
+		twentyFourSeven: false,
+		autoLeave: false,
+		autoPause: true,
+		autoQueue: false,
+		history: false,
+	}
 };

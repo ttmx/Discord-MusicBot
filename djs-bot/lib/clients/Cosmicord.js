@@ -20,8 +20,18 @@ class CosmicordPlayerExtended extends CosmiPlayer {
 
 		/** @type {CosmicordExtended} */
 		this.cosmicord = cosmicordExtended;
-		/** @type {boolean} */
-		this.twentyFourSeven = false;
+		
+		getConfig().then((config) => {
+			const defaultValues = config.defaultPlayerValues;
+
+			if (typeof defaultValues === "object") {
+				const defaultKeys = Object.keys(config.defaultPlayerValues);
+				
+				defaultKeys.forEach((key) => {
+					this.set(key, defaultValues[key]);
+				})
+			}
+		});
 	}
 
 	/** The guild id of the player */
