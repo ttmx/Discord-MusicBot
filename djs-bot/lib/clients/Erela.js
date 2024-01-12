@@ -13,7 +13,7 @@ const { default: AppleMusic } = require("better-erela.js-apple"); // <---
 const { updateControlMessage } = require("../../util/controlChannel");
 const { handleTrackStart } = require("../MusicEvents");
 const { pause } = require("../../util/player");
-const getConfig = require("../../util/getConfig");
+const { setDefaultPlayerConfig } = require("../../util/musicManager");
 
 Structure.extend(
 	"Player",
@@ -23,17 +23,7 @@ Structure.extend(
 		constructor(...props) {
 			super(...props);
 
-			getConfig().then((config) => {
-				const defaultValues = config.defaultPlayerValues;
-
-				if (typeof defaultValues === "object") {
-					const defaultKeys = Object.keys(config.defaultPlayerValues);
-					
-					defaultKeys.forEach((key) => {
-						this.set(key, defaultValues[key]);
-					})
-				}
-			});
+			setDefaultPlayerConfig(this);
 		}
 
 		/**

@@ -8,6 +8,7 @@ const { Cosmicord, CosmiPlayer, CosmiNode } = require("cosmicord.js");
 const { updateControlMessage } = require("../../util/controlChannel");
 const { handleTrackStart } = require("../MusicEvents");
 const { pause } = require("../../util/player");
+const { setDefaultPlayerConfig } = require("../../util/musicManager");
 
 class CosmicordPlayerExtended extends CosmiPlayer {
 	/**
@@ -21,17 +22,7 @@ class CosmicordPlayerExtended extends CosmiPlayer {
 		/** @type {CosmicordExtended} */
 		this.cosmicord = cosmicordExtended;
 		
-		getConfig().then((config) => {
-			const defaultValues = config.defaultPlayerValues;
-
-			if (typeof defaultValues === "object") {
-				const defaultKeys = Object.keys(config.defaultPlayerValues);
-				
-				defaultKeys.forEach((key) => {
-					this.set(key, defaultValues[key]);
-				})
-			}
-		});
+		setDefaultPlayerConfig(this);
 	}
 
 	/** The guild id of the player */
