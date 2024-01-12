@@ -128,7 +128,7 @@ const command = new SlashCommand()
 			player.set("requester", interaction.guild.members.me);
 			addTrack(player, res.tracks[0]);
 
-			if (!player.playing && !player.paused && !player.queue.size) {	
+			if (!player.playing && !player.paused && !player.queue.size) {
 				player.play();
 			}
 
