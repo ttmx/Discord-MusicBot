@@ -43,20 +43,23 @@ const command = new SlashCommand()
 		if (status === 1) {
 			return interaction.reply({
 				embeds: [
-					redEmbed(
-						`There is nothing after [${song.title}](${song.uri}) in the queue.`
-					),
+					redEmbed({
+						desc: `There is nothing after [${song.title}](${song.uri}) in the queue.`
+					}),
 				],
 			});
 		}
 
-		interaction.reply({
+		const ret = await interaction.reply({
 			embeds: [
 				new EmbedBuilder()
 					.setColor(client.config.embedColor)
 					.setDescription("✅ | **Skipped!**"),
 			],
+		 	fetchReply: true 
 		});
+		if (ret) setTimeout(() => ret.delete().catch(client.warn), 20000);
+		return ret;
 	});
 
 module.exports = command;
