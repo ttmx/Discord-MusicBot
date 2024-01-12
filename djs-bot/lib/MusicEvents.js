@@ -3,7 +3,11 @@
 const colors = require("colors");
 const { getClient } = require("../bot");
 const socket = require("../api/v1/dist/ws/eventsHandler");
-const { updateControlMessage, updateNowPlaying } = require("../util/controlChannel");
+const {
+	updateControlMessage,
+	updateNowPlaying,
+	runIfNotControlChannel,
+} = require("../util/controlChannel");
 const { trackStartedEmbed } = require("../util/embeds");
 
 // entries in this map should be removed when bot disconnected from vc
@@ -60,6 +64,24 @@ function handleQueueUpdate({ guildId, player }) {
 	socket.handleQueueUpdate({ guildId, player });
 }
 
+function sendTrackHistory({ player, track }) {
+	runIfNotControlChannel(player, () => {
+		const history = player.get("history");
+		if (!history) return;
+
+		const client = getClient();
+
+		client.channels.cache
+			.get(player.textChannel)
+			?.send({
+				embeds: [
+					trackStartedEmbed({ track, player, title: "Played track" }),
+				],
+			})
+			.catch(client.warn);
+	});
+}
+
 /**
  * @param {import("./MusicEvents").IHandleTrackStartParams}
  */
@@ -72,16 +94,9 @@ function handleTrackStart({ player, track }) {
 
 	if (!playedTracks.includes(track)) playedTracks.push(track);
 
-	const history = player.get("history");
-	if (history) {
-		client.channels.cache
-			.get(player.textChannel)
-			.send({ embeds: [trackStartedEmbed({ track, player, title: 'Played track' })]})
-			.catch(client.warn);
-	}
-
 	updateNowPlaying(player, track);
 	updateControlMessage(player.guild, track);
+	sendTrackHistory({ player, track });
 
 	socket.handleTrackStart({ player, track });
 	socket.handlePause({ guildId: player.guild, state: player.paused });
