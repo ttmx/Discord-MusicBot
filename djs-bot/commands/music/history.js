@@ -5,7 +5,7 @@ const { historyEmbed } = require("../../util/embeds");
 
 const command = new SlashCommand()
 	.setName("history")
-	.setDescription("Remove song history (toggle)")
+	.setDescription("Keep song history in chat (toggle)")
 	.setRun(async (client, interaction) => {
 		let channel = await client.getChannel(client, interaction);
 		if (!channel) {
