@@ -4,8 +4,8 @@
 	"version": "5.4.1",
 	"name": "discord-musicbot",
 	"scripts": {
-		"guild": "node scripts/guild",
-		"deploy": "node scripts/global",
+		"guild": "npm run api-build && node scripts/guild",
+		"deploy": "npm run api-build && node scripts/global",
 		"destroy": "node scripts/destroy",
 		"update": "node scripts/update",
 		"bot": "npm run api-build && node index.js",
