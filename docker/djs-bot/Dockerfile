@@ -7,4 +7,5 @@ RUN apt-get update -y && \
       libcairo2-dev \
       librsvg2-dev \
       libjpeg-dev \
-      libgif-dev
+      libgif-dev \
+      fonts-noto-cjk fonts-noto \
