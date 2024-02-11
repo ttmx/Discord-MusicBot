@@ -1,11 +1,9 @@
-import fastify from 'fastify';
+import { FastifyInstance } from 'fastify';
 import * as uws from 'uWebSockets.js';
 import { ERROR_CODES, STATUS_CODES } from '../lib/constants';
 import type DJSBot from '../../../../lib/Bot';
 
 export type Bot = DJSBot;
-
-export type FastifyInstance = ReturnType<typeof fastify>;
 
 export type RegisterRouteHandler = Parameters<FastifyInstance['register']>[0];
 
