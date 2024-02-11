@@ -8,4 +8,4 @@ RUN apt-get update -y && \
       librsvg2-dev \
       libjpeg-dev \
       libgif-dev \
-      noto-fonts-cjk
+      fonts-noto-cjk fonts-noto \
