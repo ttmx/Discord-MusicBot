@@ -9,7 +9,7 @@ steps:
       tag: latest
       username: dmb
       password:
-        from_secret: ${{ env.DPASTE_TOKEN }}
+        from_secret: DPASTE_TOKEN
     when:
       branch: ${CI_REPO_DEFAULT_BRANCH}
       event: push
