@@ -1,0 +1,30 @@
+when:
+  - event: [pull_request, tag, cron]
+  - event: push
+    branch:
+      - develop
+      - master
+      - renovate/*
+
+steps:
+  lint-dockerfile:
+    image: hadolint/hadolint:v2.12.1-beta-alpine
+    commands:
+      - hadolint Dockerfile
+    when:
+      path: "Dockerfile"
+
+  lint-shell:
+    image: koalaman/shellcheck-alpine:latest # not maintained semver version as of 2023-10
+    group: lint-build
+    commands:
+      - shellcheck *.sh
+    when:
+      path: "*.sh"
+
+  lint-markdown:
+    image: davidanson/markdownlint-cli2:v0.12.1
+    commands:
+      - "markdownlint-cli2 *.{md,markdown}"
+    when:
+      path: "*.{md,markdown}"
