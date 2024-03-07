@@ -9,4 +9,5 @@ These fine people brought us delight by adding their gems of freedom to this del
 - BioCla
 - LewdHuTao
 
-<!-- TODO, ADD MORE CONTRIBUTOR FROM OLD GIT -->
+<!-- TODO, ADD MORE CONTRIBUTOR FROM OLD GIT; Format if links are included -->
+<!-- [Mrs. Example](https://example.com/) (git: [@example](https://example.com/example), fediverse: [@example@mastodon.social](https://mastodon.socoal/example)) -->
