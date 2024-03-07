@@ -48,4 +48,4 @@ Be sure to push to our new [git server](https://git.dpaste.org/dmb/Discord-Music
 ## 🌟 | Made with
 
 - [Discord.js](https://discord.js.org/)
-- [Lavalink](https://github.com/freyacodes/Lavalink) with erela.js, Cosmicord.js
+- [Lavalink](https://github.com/lavalink-devs/Lavalink) with erela.js, Cosmicord.js
