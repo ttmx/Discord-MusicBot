@@ -13,6 +13,20 @@
 
 If you have major coding issues with this bot, please join and ask for help.
 
+## Devlog
+
+```diff
+# Current talking points
++ Possible re-write?
+> “Rebuild everything from scratch because DJS is being very dumb.” - Brian 3/6/2024
+
++ Consideration for rewrite (lib)
+https://github.com/Didas-git/lilybird
+
++ If you have any suggestions please make an issue so we can consider it! :D
+https://git.dpaste.org/dmb/Discord-MusicBot/issues
+```
+
 ## 📸 | Screenshots
 
 Soon
