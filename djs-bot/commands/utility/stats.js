@@ -8,7 +8,7 @@ const command = new SlashCommand()
 	.setName("stats")
 	.setDescription("Get information about the bot")
 	.setRun(async (client, interaction) => {
-		let nodesInfo = "";
+		let nodes = "";
 
 		client.manager.Engine.nodes.forEach((node) => {
 			// show lavalink uptime in a nice format
