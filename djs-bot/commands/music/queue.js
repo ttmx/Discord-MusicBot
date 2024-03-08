@@ -2,7 +2,7 @@ const SlashCommand = require("../../lib/SlashCommand");
 const { EmbedBuilder, Message, escapeMarkdown, AttachmentBuilder } = require("discord.js");
 const load = require("lodash");
 const pms = require("pretty-ms");
-const createCard = require("songcard");
+const { classicCard } = require("songcard");
 const path = require("path");
 const { getButtons } = require("../../util/embeds");
 
@@ -59,13 +59,13 @@ const command = new SlashCommand()
 			const song = player.queue.current;
 			const noBgURL = path.join(__dirname, "..", "..", "assets", "no_bg.png");
 
-			const cardImage = await createCard(
-				(imageBg = song.displayThumbnail("maxresdefault") || noBgURL),
-				(imageText = song.title),
-				(trackStream = song.isStream),
-				(trackDuration = player.position),
-				(trackTotalDuration = song.duration)
-			);
+			const cardImage = await classicCard({
+				imageBg: song.displayThumbnail("maxresdefault") || noBgURL,
+				imageText: song.title,
+				trackStream: song.isStream,
+				trackDuration: player.position,
+				trackTotalDuration: song.duration
+			});
 
 			const attachment = new AttachmentBuilder(cardImage, { name: "card.png" });
 
