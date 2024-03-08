@@ -51,8 +51,7 @@ const command = new SlashCommand()
 			});
 		}
 
-		await interaction.deferReply().catch(() => {
-		});
+		await interaction.deferReply().catch(() => {});
 
 		const queue = player.queue;
 		if (!queue.length) {
@@ -64,7 +63,7 @@ const command = new SlashCommand()
 				imageText: song.title,
 				trackStream: song.isStream,
 				trackDuration: player.position,
-				trackTotalDuration: song.duration
+				trackTotalDuration: song.duration,
 			});
 
 			const attachment = new AttachmentBuilder(cardImage, { name: "card.png" });
@@ -95,13 +94,13 @@ const command = new SlashCommand()
 		const song = player.queue.current;
 		const noBgURL = path.join(__dirname, "..", "..", "assets", "no_bg.png");
 
-		const cardImage = await createCard(
-			(imageBg = song.displayThumbnail("maxresdefault") || noBgURL),
-			(imageText = song.title),
-			(trackStream = song.isStream),
-			(trackDuration = player.position),
-			(trackTotalDuration = song.duration)
-		);
+		const cardImage = await classicCard({
+			imageBg: song.displayThumbnail("maxresdefault") || noBgURL,
+			imageText: song.title,
+			trackStream: song.isStream,
+			trackDuration: player.position,
+			trackTotalDuration: song.duration,
+		});
 
 		const attachment = new AttachmentBuilder(cardImage, { name: "card.png" });
 
@@ -129,9 +128,13 @@ const command = new SlashCommand()
 				currentGroup
 					.map(
 						(song, index) =>
-							`**${currentPage * 10 + index + 1}**. [${escapeMarkdown(
-								song.title
-							)}](${song.uri}) \`[${pms(song.duration)}]\` | ${song.requester}`
+							`**${
+								currentPage * 10 + index + 1
+							}**. [${escapeMarkdown(song.title)}](${
+								song.uri
+							}) \`[${pms(song.duration)}]\` | ${
+								song.requester
+							}`
 					)
 					.join("\n")
 			)
@@ -143,9 +146,7 @@ const command = new SlashCommand()
 		const queueMessage = await interaction.editReply({
 			embeds: [embed, queueEmbed],
 			files: [attachment],
-			components: [
-				getButtons(currentPage, maxPage)
-			],
+			components: [getButtons(currentPage, maxPage)],
 		});
 
 		const filter = (i) => i.user.id === interaction.user.id;
@@ -169,9 +170,13 @@ const command = new SlashCommand()
 					currentGroup
 						.map(
 							(song, index) =>
-								`**${currentPage * 10 + index + 1}**. [${escapeMarkdown(
+								`**${
+									currentPage * 10 + index + 1
+								}**. [${escapeMarkdown(
 									song.title
-								)}](${song.uri}) \`[${pms(song.duration)}]\` | ${song.requester}`
+								)}](${song.uri}) \`[${pms(
+									song.duration
+								)}]\` | ${song.requester}`
 						)
 						.join("\n")
 				)
@@ -179,9 +184,7 @@ const command = new SlashCommand()
 
 			await button.update({
 				embeds: [embed, queueEmbed],
-				components: [
-					getButtons(currentPage, maxPage)
-				],
+				components: [getButtons(currentPage, maxPage)],
 			});
 		});
 	});
