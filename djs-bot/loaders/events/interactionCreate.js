@@ -41,6 +41,7 @@ module.exports = async (client, interaction) => {
 
 		try {
 			command.run(client, interaction, interaction.options);
+			client.commandsRan++;
 		} catch (err) {
 			interaction[interaction.replied ? "editReply" : "reply"]({
 				content: err.message,
