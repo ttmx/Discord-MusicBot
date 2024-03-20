@@ -107,6 +107,7 @@ function handleTrackStart({ player, track }) {
 	client.warn(
 		`Player: ${player.guild} | Track has started playing [${colors.blue(track.title)}]`
 	);
+	client.songsPlayed++;
 }
 
 function handlePause({ player, state }) {

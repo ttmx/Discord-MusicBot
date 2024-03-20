@@ -58,7 +58,9 @@ const command = new SlashCommand()
 				},
 				{
 					name: "Bot stats",
-					value: `\`\`\`yml\nGuilds: ${
+					value: `\`\`\`yml\nCommandsRan: ${
+						client.commandsRan
+					}\nSongsPlayed: ${client.songsPlayed}\nGuilds: ${
 						client.guilds.cache.size
 					} \nNodeJS: ${nodeVersion}\nDiscordMusicBot: v${
 						require("../../package.json").version
