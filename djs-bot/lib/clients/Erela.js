@@ -266,7 +266,6 @@ module.exports = (client) => {
 
                   // !TODO: integrate events with socket
 		.on("trackStart", async (player, track) => {
-			client.songsPlayed++;
 			handleTrackStart({
 				player, track
 			});
