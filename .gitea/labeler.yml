@@ -1,8 +1,0 @@
-djs-bot:
-- 'djs-bot/**'
-
-dashboard:
-- 'dashboard/**'
-
-context:
-- 'docker/**'
