@@ -1,0 +1,15 @@
+{
+    "recommendations": [
+        "oven.bun-vscode",
+        "dbaeumer.vscode-eslint",
+        "ms-vscode.vscode-typescript-next",
+        "esbenp.prettier-vscode",
+        "prisma.prisma",
+        "rvest.vs-code-prettier-eslint",
+        "foxundermoon.shell-format",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "ms-azuretools.vscode-docker",
+        "dotenv.dotenv-vscode"
+    ]
+}

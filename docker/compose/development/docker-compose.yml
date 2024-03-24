@@ -1,0 +1,52 @@
+version: "3.8"
+services:
+  postgres-db:
+    image: postgres:16.2-alpine
+    container_name: pgsql
+    hostname: pgsql
+    restart: unless-stopped
+    networks:
+      - backend
+    environment:
+      POSTGRES_PASSWORD:  ${POSTGRES_PASSWORD:-root}
+      POSTGRES_USER:      ${POSTGRES_USER:-root}
+      POSTGRES_DB:        ${POSTGRES_DB:-base}
+      PGPORT:             ${PGPORT:-5432}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${PGPORT:-5432}:${PGPORT:-5432}"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${POSTGRES_DB}"]
+      interval: 1s
+      timeout: 10s
+      retries: 5
+
+  bun:
+    container_name: bun
+    image: oven/bun:latest
+    restart: "unless-stopped"
+    volumes:
+      - ../../../dmb:/dmb
+    env_file:
+      - .env
+    working_dir: /dmb
+    stdin_open: true
+    tty: true
+    networks:
+      - backend
+    environment:
+      BUN_PORT: ${BUN_PORT:-3001}
+    ports:
+      - "${BUN_PORT:-3001}:${BUN_PORT:-3001}"
+    command: bun start:dev
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge
