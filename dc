@@ -284,7 +284,7 @@ verify_compose() {
         COMPOSE_OVERRIDE="--file $OVERRIDE_FILE"
     fi
 
-    DOCKER="docker-compose \
+    DOCKER="docker compose \
         --file docker/compose/${COMPOSE_CONFIGURATION}/docker-compose.yml \
         --env-file docker/compose/${COMPOSE_CONFIGURATION}/.env \
         ${COMPOSE_OVERRIDE} \

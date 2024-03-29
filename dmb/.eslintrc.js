@@ -6,7 +6,7 @@ module.exports = {
         ecmaVersion: 'latest',
         tsconfigRootDir: __dirname,
         project: [
-            './tsconfig.json' // this is relative to ${workspaceFolder}
+            './dmb/tsconfig.json' // this is relative to ${workspaceFolder}
         ]
     },
     settings: {
