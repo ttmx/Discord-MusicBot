@@ -1,12 +1,12 @@
-import { ApplicationCommand } from "@lilybird/jsx";
 import { SlashCommand } from "@lilybird/handlers";
+import { POSTApplicationCommandStructure } from "lilybird";
 
 export default {
   post: "GLOBAL",
-  data: ApplicationCommand({
+  data: {
     name: "ping",
-    description: "Check the bot's ping",
-  }),
+    description: "Check the bot's ping.",
+  } satisfies POSTApplicationCommandStructure,
   run: async (interaction) => {
     await interaction.deferReply();
 
