@@ -1,6 +1,57 @@
 <h1 align="center"> Discord Music Bot </h1>
 
-## 📸 | Screenshots
+*P.S. Screenshot / Preview at the bottom of ReadMe :)*
+
+## 🚧 | Prerequisites
+
+- [Docker](https://www.docker.com/)
+- Optionally: [GNU Make](https://www.gnu.org/software/make/)
+
+## 📝 | [Tutorial](https://dmb.darrennathanael.com/v5/)
+
+[Discord Music Bot V5 Docs](https://dmb.darrennathanael.com/v5/)
+
+[Expert version](https://git.dpaste.org/dmb/DiscordMusicBot-Docs/src/branch/main/docs/v5/index.md)
+
+## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
+
+If you have major coding issues with this bot, please join and ask for help.
+
+## Devlog
+
+```diff
+# Current talking points
++ Possible re-write?
+> “Rebuild everything from scratch because DJS is being very dumb.” - Brian 3/6/2024
+
++ Consideration for rewrite (lib)
+https://github.com/Didas-git/lilybird
+
++ v6 has started development
+https://git.dpaste.org/dmb/Discord-MusicBot/src/branch/v6
+```
+
+
+## 🚀 | Deploy
+
+- No deployment options have been configured yet
+
+## ✨ | Contributors
+
+Contributions are always welcomed :D Make sure to follow [Contributing.md](https://git.dpaste.org/dmb/Discord-MusicBot/src/branch/develop/CONTRIBUTING.md)
+
+Be sure to push to our new [Git Server](https://git.dpaste.org/dmb/Discord-MusicBot); GitHub is just a mirror!
+
+<a href="https://github.com/wtfnotavailable/Discord-MusicBot/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=wtfnotavailable/Discord-MusicBot" />
+</a>
+
+## 🌟 | Made with
+
+- [Discord.js](https://discord.js.org/)
+- [Lavalink](https://github.com/lavalink-devs/Lavalink) with erela.js, Cosmicord.js
+
+## 📸 | Preview
 
 "A picture is worth a thousand words"-Someone
 
@@ -46,52 +97,3 @@
 </figure>
 
 Not convinced yet? Well, I don't know what will convince you then. Either way, the bot is open-source; edit it yourself!
-
-## 🚧 | Prerequisites
-
-- [Docker](https://www.docker.com/)
-- Optionally: [GNU Make](https://www.gnu.org/software/make/)
-
-## 📝 | [Tutorial](https://dmb.darrennathanael.com/v5/)
-
-[Discord Music Bot V5 Docs](https://dmb.darrennathanael.com/v5/)
-
-[Expert version](https://git.dpaste.org/dmb/DiscordMusicBot-Docs/src/branch/main/docs/v5/index.md)
-
-## 📝 | [Support Server](https://discord.gg/sbySMS7m3v)
-
-If you have major coding issues with this bot, please join and ask for help.
-
-## Devlog
-
-```diff
-# Current talking points
-+ Possible re-write?
-> “Rebuild everything from scratch because DJS is being very dumb.” - Brian 3/6/2024
-
-+ Consideration for rewrite (lib)
-https://github.com/Didas-git/lilybird
-
-+ If you have any suggestions please make an issue so we can consider it! :D
-https://git.dpaste.org/dmb/Discord-MusicBot/issues
-```
-
-## 🚀 | Deploy
-
-- No deployment options have been configured yet
-
-## ✨ | Contributors
-
-Contributions are always welcomed :D Make sure to follow [Contributing.md](https://git.dpaste.org/dmb/Discord-MusicBot/src/branch/develop/CONTRIBUTING.md)
-
-Be sure to push to our new [Git Server](https://git.dpaste.org/dmb/Discord-MusicBot); GitHub is just a mirror!
-
-<a href="https://github.com/wtfnotavailable/Discord-MusicBot/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=wtfnotavailable/Discord-MusicBot" />
-</a>
-
-## 🌟 | Made with
-
-- [Discord.js](https://discord.js.org/)
-- [Lavalink](https://github.com/lavalink-devs/Lavalink) with erela.js, Cosmicord.js
-
