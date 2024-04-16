@@ -4,39 +4,41 @@ services:
   djs-bot:
     container_name: djs-bot
     build:
-      context: ..
-      dockerfile: ./docker/djs-bot/Dockerfile
+      context: ../djs-bot
+      # dockerfile: ./docker/djs-bot/Dockerfile
     restart: "unless-stopped"
     init: true
-    environment:
-      - TOKEN=${TOKEN}
-      - CLIENTID=${CLIENTID}
-      - CLIENTSECRET=${CLIENTSECRET}
-      - DEVUID=${DEVUID}
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    # environment:
+    #   - TOKEN=${TOKEN}
+    #   - CLIENTID=${CLIENTID}
+    #   - CLIENTSECRET=${CLIENTSECRET}
+    #   - DEVUID=${DEVUID}
+    #   - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    env_file:
+      - ../djs-bot/.env
     stdin_open: true
     tty: true
-    volumes:
-      - ../djs-bot:/djs-bot
-    ports:
-      - "8080:8080"
-      - "3001:3001"
-    working_dir: /djs-bot
-    command: ["npm", "run", "${ENABLE:-start}"]
+    # volumes:
+    #   - ../djs-bot:/djs-bot
+    # ports:
+    #   - "8080:8080"
+    #   - "3001:3001"
+    # working_dir: /djs-bot
+    # command: ["npm", "run", "${ENABLE:-start}"]
 
-  dashboard:
-    container_name: dashboard
-    image: node:latest
-    restart: "unless-stopped"
-    init: true
-    stdin_open: true
-    tty: true
-    volumes:
-      - ../dashboard:/dashboard
-    ports:
-      - "3000:3000"
-    working_dir: /dashboard
-    command: ["npm", "run", "build-and-start"]
+  # dashboard:
+  #   container_name: dashboard
+  #   image: node:latest
+  #   restart: "unless-stopped"
+  #   init: true
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - ../dashboard:/dashboard
+  #   ports:
+  #     - "3000:3000"
+  #   working_dir: /dashboard
+  #   command: ["npm", "run", "build-and-start"]
 
   postgres-db:
     image: postgres:15.2-alpine
@@ -51,15 +53,15 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   lavalink:
-    image: fredboat/lavalink:3
+    image: ghcr.io/lavalink-devs/lavalink:v3-update-lp
     container_name: lavalink
     restart: unless-stopped
     hostname: docker.lavalink
     volumes:
       - ./lavalink/application.yml:/opt/Lavalink/application.yml
       - ./lavalink/plugins/:/opt/Lavalink/plugins
-    ports:
-      - 2333:2333
+    # ports:
+    #   - 2333:2333
 
 volumes:
   postgres_data:
